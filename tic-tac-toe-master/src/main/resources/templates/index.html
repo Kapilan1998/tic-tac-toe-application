@@ -4,6 +4,7 @@
     <title>Tic-Tac-Toe</title>
     <link th:href="@{/css/toastr.css}" type="text/css" rel="stylesheet"/>
     <link th:href="@{/css/tictactoe.css}" type="text/css" rel="stylesheet"/>
+    <link th:href="@{/css/finalDesign.css}" type="text/css" rel="stylesheet"/>
 </head>
 <body>
 <div class="game-content">
@@ -57,7 +58,7 @@
 
 <!-- Beautiful Popup Box -->
 <div id="popupBox" class="popup">
-    <div class="popup-content" style="background-color: lightblue; /* Light blue background */">
+    <div class="popup-content" style="background-color: lightblue;">
         <span class="close" onclick="closePopupBox()">&times;</span>
         <pre id="popupContent"></pre>
     </div>
@@ -71,8 +72,8 @@
                 throw new Error('Network response was not ok ' + response.statusText);
             }
             const data = await response.json();
-            console.log(data); // You can replace this with your desired action
-            displayPopup(data); // Display the result in the popup box
+            console.log(data);
+            displayPopup(data);
         } catch (error) {
             console.error('There has been a problem with your fetch operation:', error);
         }
@@ -90,45 +91,5 @@
         popupBox.style.display = 'none'; // Hide the popup box
     }
 </script>
-
-<style>
-    /* Styles for the popup box */
-    .popup {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
-        left: 0;
-        top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgba(0, 0, 0, 0.4); /* Transparent black background */
-    }
-
-    .popup-content {
-        margin: 15% auto; /* 15% from the top and centered */
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%; /* Could be more or less, depending on screen size */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
-        border-radius: 10px; /* Rounded corners */
-        background-color: lightblue; /* Light blue background color */
-    }
-
-    .close {
-        color: #aaaaaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: #000;
-        text-decoration: none;
-        cursor: pointer;
-    }
-</style>
-
 </body>
 </html>
