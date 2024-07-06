@@ -80,15 +80,53 @@
 
     function displayPopup(data) {
         const popupContent = document.getElementById('popupContent');
-        popupContent.textContent = JSON.stringify(data, null, 2);
+
+        // Clear previous content
+        popupContent.innerHTML = '';
+
+        // Create table element
+        const table = document.createElement('table');
+        table.classList.add('table');
+
+        // Create table header
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        const headers = ['Game Name', 'Winner'];
+        headers.forEach(headerText => {
+            const th = document.createElement('th');
+            th.textContent = headerText;
+            headerRow.appendChild(th);
+        });
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        // Create table body
+        const tbody = document.createElement('tbody');
+        data.forEach(item => {
+            const row = document.createElement('tr');
+            const gameNameCell = document.createElement('td');
+            gameNameCell.textContent = item.gameName;
+            const winnerCell = document.createElement('td');
+            winnerCell.textContent = item.winner;
+            row.appendChild(gameNameCell);
+            row.appendChild(winnerCell);
+            tbody.appendChild(row);
+        });
+        table.appendChild(tbody);
+
+        // Append table to popup content
+        popupContent.appendChild(table);
+
+        // Show the popup box
         const popupBox = document.getElementById('popupBox');
-        popupBox.style.display = 'block'; // Show the popup box
+        popupBox.style.display = 'block';
     }
 
     function closePopupBox() {
         const popupBox = document.getElementById('popupBox');
         popupBox.style.display = 'none'; // Hide the popup box
     }
+
 </script>
 </body>
 </html>
