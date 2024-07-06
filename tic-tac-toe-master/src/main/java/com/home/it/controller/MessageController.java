@@ -1,11 +1,14 @@
 package com.home.it.controller;
 
+import com.home.it.agent.GameAgent;
+import com.home.it.agent.GameResultAgent;
+import com.home.it.agent.PlayerAgent;
 import com.home.it.enums.GameState;
+import com.home.it.manager.TicTacToeManager;
 import com.home.it.model.TicTacToe;
 import com.home.it.model.dto.JoinMessage;
 import com.home.it.model.dto.PlayerMessage;
 import com.home.it.model.dto.TicTacToeMessage;
-import com.home.it.manager.TicTacToeManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -25,6 +28,15 @@ public class MessageController {
     //Template for sending messages to web socket clients through the message broker.
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
+
+    @Autowired
+    GameAgent gameAgent;
+
+    @Autowired
+    PlayerAgent playerAgent;
+
+    @Autowired
+    GameResultAgent gameResultAgent;
 
     private final TicTacToeManager ticTacToeManager = new TicTacToeManager();
 
@@ -143,6 +155,9 @@ public class MessageController {
         message.setGameState(game.getGameState());
         message.setWinner(game.getWinner());
         log.info("game details {},", game);
+        playerAgent.savePlayer(game);
+        gameAgent.saveGame(game);
+        gameResultAgent.saveGameResult(game);
         return message;
     }
 }

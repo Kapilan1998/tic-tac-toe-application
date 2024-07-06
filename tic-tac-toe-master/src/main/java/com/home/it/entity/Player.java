@@ -6,17 +6,10 @@ import lombok.Data;
 @Entity
 @Table
 @Data
-public class GameResult {
+public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "game_id")
-    private Game game;
-
-    @ManyToOne
-    @JoinColumn(name = "player_id")
-    private Player playerId;
-
+    private String firstPlayerName;
+    private String secondPlayerName;
 }
