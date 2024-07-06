@@ -15,6 +15,7 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 @Service
@@ -28,6 +29,7 @@ public class MessageService {
     private final SimpMessagingTemplate simpMessagingTemplate;      //    //Template for sending messages to web socket clients through the message broker.
 
 
+    @Transactional
     public Object joinGame(JoinMessage message, SimpMessageHeaderAccessor headerAccessor) {
         TicTacToe game = ticTacToeManager.joinGame(message.getPlayer());
         if (game == null) {
@@ -58,9 +60,11 @@ public class MessageService {
         message.setGameState(game.getGameState());
         message.setWinner(game.getWinner());
         log.info("game details {},", game);
-        playerAgent.savePlayer(game);
         gameAgent.saveGame(game);
-        gameResultAgent.saveGameResult(game);
+        if(game.getWinner() != null) {
+            playerAgent.savePlayer(game);
+            gameResultAgent.saveGameResult(game);
+        }
         return message;
     }
 

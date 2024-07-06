@@ -16,6 +16,7 @@ public class GameConverter {
         Game game = new Game();
         game.setId(ticTacToeDto.getGameId());
         game.setGameDate(LocalDateTime.now());
+        game.setGameName("Triple game");
         return game;
     }
 }
