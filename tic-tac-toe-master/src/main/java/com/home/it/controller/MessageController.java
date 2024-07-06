@@ -1,6 +1,6 @@
 package com.home.it.controller;
 
-import com.home.it.enumeration.GameState;
+import com.home.it.enums.GameState;
 import com.home.it.model.TicTacToe;
 import com.home.it.model.dto.JoinMessage;
 import com.home.it.model.dto.PlayerMessage;
@@ -24,7 +24,7 @@ public class MessageController {
 
     //Template for sending messages to web socket clients through the message broker.
     @Autowired
-    private SimpMessagingTemplate messagingTemplate;
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     private final TicTacToeManager ticTacToeManager = new TicTacToeManager();
 
@@ -39,9 +39,9 @@ public class MessageController {
             return errorMessage;
         }
         headerAccessor.getSessionAttributes().put("gameId", game.getGameId());
-        log.info("game id = {}",game.getGameId());
+        log.info("game id = {}", game.getGameId());
         headerAccessor.getSessionAttributes().put("player", message.getPlayer());
-        log.info("message.getPlayer() {}",message.getPlayer());
+        log.info("message.getPlayer() {}", message.getPlayer());
 
         TicTacToeMessage gameMessage = gameToMessage(game);
         gameMessage.setType("game.joined");
@@ -56,8 +56,8 @@ public class MessageController {
         if (game != null) {
             TicTacToeMessage gameMessage = gameToMessage(game);
             gameMessage.setType("game.left");
-                    // convert the payload to a messaging format so, below method used (first argument is who subscribed this will receive msg, second is message)
-            messagingTemplate.convertAndSend("/topic/game." + game.getGameId(), gameMessage);
+            // convert the payload to a messaging format so, below method used (first argument is who subscribed this will receive msg, second is message)
+            simpMessagingTemplate.convertAndSend("/topic/game." + game.getGameId(), gameMessage);
         }
     }
 
@@ -73,7 +73,7 @@ public class MessageController {
             TicTacToeMessage errorMessage = new TicTacToeMessage();
             errorMessage.setType("error");
             errorMessage.setContent("Game already finished");
-            this.messagingTemplate.convertAndSend("/topic/game." + gameId, errorMessage);
+            this.simpMessagingTemplate.convertAndSend("/topic/game." + gameId, errorMessage);
             return;
         }
 
@@ -81,7 +81,7 @@ public class MessageController {
             TicTacToeMessage errorMessage = new TicTacToeMessage();
             errorMessage.setType("error");
             errorMessage.setContent("Game is waiting for another player to join.");
-            this.messagingTemplate.convertAndSend("/topic/game." + gameId, errorMessage);
+            this.simpMessagingTemplate.convertAndSend("/topic/game." + gameId, errorMessage);
             return;
         }
 
@@ -90,12 +90,12 @@ public class MessageController {
 
             TicTacToeMessage gameStateMessage = new TicTacToeMessage(game);
             gameStateMessage.setType("game.move");
-            this.messagingTemplate.convertAndSend("/topic/game." + gameId, gameStateMessage);
+            this.simpMessagingTemplate.convertAndSend("/topic/game." + gameId, gameStateMessage);
 
             if (game.isGameOver()) {
                 TicTacToeMessage gameOverMessage = gameToMessage(game);
                 gameOverMessage.setType("game.gameOver");
-                this.messagingTemplate.convertAndSend("/topic/game." + gameId, gameOverMessage);
+                this.simpMessagingTemplate.convertAndSend("/topic/game." + gameId, gameOverMessage);
                 ticTacToeManager.removeGame(gameId);
             }
         }
@@ -103,6 +103,7 @@ public class MessageController {
 
     @EventListener
     public void SessionDisconnectEvent(SessionDisconnectEvent event) {
+        //Wraps the event message to access header attributes.
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
         String gameId = headerAccessor.getSessionAttributes().get("gameId").toString();
         String player = headerAccessor.getSessionAttributes().get("player").toString();
@@ -127,7 +128,7 @@ public class MessageController {
             }
             TicTacToeMessage gameMessage = gameToMessage(game);
             gameMessage.setType("game.gameOver");
-            messagingTemplate.convertAndSend("/topic/game." + gameId, gameMessage);
+            simpMessagingTemplate.convertAndSend("/topic/game." + gameId, gameMessage);
             ticTacToeManager.removeGame(gameId);
         }
     }
@@ -141,7 +142,7 @@ public class MessageController {
         message.setTurn(game.getTurn());
         message.setGameState(game.getGameState());
         message.setWinner(game.getWinner());
-        log.info("game details {},",game);
+        log.info("game details {},", game);
         return message;
     }
 }

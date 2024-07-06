@@ -1,4 +1,4 @@
-package com.home.it.enumeration;
+package com.home.it.enums;
 
 public enum GameState {
     WAITING_FOR_PLAYER("Waiting for player."),

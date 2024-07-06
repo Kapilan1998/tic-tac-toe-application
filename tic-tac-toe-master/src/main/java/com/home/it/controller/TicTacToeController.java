@@ -12,21 +12,12 @@ import java.util.Arrays;
 @RequestMapping("/")
 public class TicTacToeController {
 
-    /**
-     * Renders the Tic-Tac-Toe game page with an empty board.
-     *
-     * @return the model and view for the Tic-Tac-Toe game page
-     */
     @GetMapping
     public ModelAndView index() {
         return ticTacToe();
     }
 
-    /**
-     * Renders the Tic-Tac-Toe game page with an empty board.
-     *
-     * @return the model and view for the Tic-Tac-Toe game page
-     */
+
     @RequestMapping("/index")
     public ModelAndView ticTacToe() {
         ModelAndView modelAndView = new ModelAndView("index");

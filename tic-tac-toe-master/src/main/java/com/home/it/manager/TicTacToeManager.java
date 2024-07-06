@@ -1,6 +1,6 @@
 package com.home.it.manager;
 
-import com.home.it.enumeration.GameState;
+import com.home.it.enums.GameState;
 import com.home.it.model.TicTacToe;
 
 import java.util.Map;

@@ -1,6 +1,6 @@
 package com.home.it.model;
 
-import com.home.it.enumeration.GameState;
+import com.home.it.enums.GameState;
 import lombok.Data;
 
 import java.util.Objects;
@@ -47,11 +47,9 @@ public class TicTacToe {
         }
     }
 
-    /**
-     * Check if there is a winner. If a winning combination is found,
-     * the winner is set to the corresponding player.
-     */
+    // method to find winner
     private void checkWinner() {
+        // Check rows for a win
         for (int i = 0; i < 3; i++) {
             if (Objects.equals(board[i][0], board[i][1]) && Objects.equals(board[i][0], board[i][2])) {
                 if (!Objects.equals(board[i][0], " ")) {
@@ -61,6 +59,7 @@ public class TicTacToe {
             }
         }
 
+        // Check columns for a win
         for (int i = 0; i < 3; i++) {
             if (Objects.equals(board[0][i], board[1][i]) && Objects.equals(board[0][i], board[2][i])) {
                 if (!Objects.equals(board[0][i], " ")) {
@@ -70,17 +69,24 @@ public class TicTacToe {
             }
         }
 
+        // Check diagonals for a win (top-left to bottom-right)
         if (Objects.equals(board[0][0], board[1][1]) && Objects.equals(board[0][0], board[2][2])) {
             if (!Objects.equals(board[0][0], " ")) {
                 setWinner(Objects.equals(board[0][0], player1) ? player1 : player2);
                 return;
             }
         }
+
+        // Check diagonals for a win (top-right to bottom-left)
+        if (Objects.equals(board[0][2], board[1][1]) && Objects.equals(board[0][2], board[2][0])) {
+            if (!Objects.equals(board[0][2], " ")) {
+                setWinner(Objects.equals(board[0][2], player1) ? player1 : player2);
+                return;
+            }
+        }
     }
 
-    /**
-     * Updates the game state based on the current state of the game.
-     */
+   //Updates the game status
     private void updateGameState() {
         if (winner != null) {
             gameState = winner.equals(player1) ? GameState.PLAYER1_WON : GameState.PLAYER2_WON;
@@ -91,11 +97,7 @@ public class TicTacToe {
         }
     }
 
-    /**
-     * Check if the board is full.
-     *
-     * @return true if the board is full, false otherwise
-     */
+
     private boolean isBoardFull() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -107,11 +109,7 @@ public class TicTacToe {
         return true;
     }
 
-    /**
-     * Check if the game is over.
-     *
-     * @return true if the game is over, false otherwise
-     */
+    // Check if the game is over. (return true if the game is over)
     public boolean isGameOver() {
         return winner != null || isBoardFull();
     }

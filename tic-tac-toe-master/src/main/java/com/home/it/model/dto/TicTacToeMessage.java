@@ -1,7 +1,7 @@
 package com.home.it.model.dto;
 
 import com.home.it.model.TicTacToe;
-import com.home.it.enumeration.GameState;
+import com.home.it.enums.GameState;
 import lombok.Data;
 
 @Data
