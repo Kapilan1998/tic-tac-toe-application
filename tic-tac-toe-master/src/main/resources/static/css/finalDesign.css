@@ -34,3 +34,38 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+/* Style added to result displaying  table */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table th,
+.table td {
+    padding: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: red;
+    border-top: 2px solid #dee2e6;
+    font-size: 1.2em;
+    font-family: 'Arial', sans-serif;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+    background-color: #e9ecef;
+}
