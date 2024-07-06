@@ -6,38 +6,18 @@ import com.home.it.model.TicTacToe;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Manager class for the Tic-Tac-Toe games.
- * Handles adding and removing players from games, and storing and retrieving the current games.
- *
- * @author Joabson Arley do Nascimento
- */
+
 public class TicTacToeManager {
 
-    /**
-     * Map of active Tic-Tac-Toe games, with the game ID as the key.
-     */
-    private final Map<String, TicTacToe> games;
 
-    /**
-     * Map of players waiting to join a Tic-Tac-Toe game, with the player's name as the key.
-     */
-    protected final Map<String, String> waitingPlayers;
+     private final Map<String, TicTacToe> games;        // Map of active Tic-Tac-Toe games, with the game ID as the key.
+    protected final Map<String, String> waitingPlayers; // Map of players waiting to join a Tic-Tac-Toe game, with the player's name as the key.
 
-    /**
-     * Constructs a new TicTacToeManager.
-     */
     public TicTacToeManager() {
         games = new ConcurrentHashMap<>();
         waitingPlayers = new ConcurrentHashMap<>();
     }
 
-    /**
-     * Attempts to add a player to an existing Tic-Tac-Toe game, or creates a new game if no open games are available.
-     *
-     * @param player the name of the player
-     * @return the Tic-Tac-Toe game the player was added to
-     */
     public synchronized TicTacToe joinGame(String player) {
         if (games.values().stream().anyMatch(game -> game.getPlayer1().equals(player) || (game.getPlayer2() != null && game.getPlayer2().equals(player)))) {
             return games.values().stream().filter(game -> game.getPlayer1().equals(player) || game.getPlayer2().equals(player)).findFirst().get();
@@ -57,17 +37,13 @@ public class TicTacToeManager {
         return game;
     }
 
-    /**
-     * Removes a player from their Tic-Tac-Toe game. If the player was the only player in the game,
-     * the game is removed.
-     *
-     * @param player the name of the player
-     */
+
     public synchronized TicTacToe leaveGame(String player) {
         String gameId = getGameByPlayer(player) != null ? getGameByPlayer(player).getGameId() : null;
         if (gameId != null) {
             waitingPlayers.remove(player);
             TicTacToe game = games.get(gameId);
+            //if player 1 leaves game
             if (player.equals(game.getPlayer1())) {
                 if (game.getPlayer2() != null) {
                     game.setPlayer1(game.getPlayer2());
@@ -90,32 +66,19 @@ public class TicTacToeManager {
         return null;
     }
 
-    /**
-     * Returns the Tic-Tac-Toe game with the given game ID.
-     *
-     * @param gameId the ID of the game
-     * @return the Tic-Tac-Toe game with the given game ID, or null if no such game exists
-     */
+
     public TicTacToe getGame(String gameId) {
         return games.get(gameId);
     }
 
-    /**
-     * Returns the Tic-Tac-Toe game the given player is in.
-     *
-     * @param player the name of the player
-     * @return the Tic-Tac-Toe game the given player is in, or null if the player is not in a game
-     */
+
+    // either player1 or player2 present
     public TicTacToe getGameByPlayer(String player) {
         return games.values().stream().filter(game -> game.getPlayer1().equals(player) || (game.getPlayer2() != null &&
                 game.getPlayer2().equals(player))).findFirst().orElse(null);
     }
 
-    /**
-     * Removes the Tic-Tac-Toe game with the given game ID.
-     *
-     * @param gameId the ID of the game to remove
-     */
+
     public void removeGame(String gameId) {
         games.remove(gameId);
     }

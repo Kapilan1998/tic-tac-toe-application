@@ -1,15 +1,12 @@
 package com.home.it.model;
 
 import com.home.it.enumeration.GameState;
+import lombok.Data;
 
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Class representing a Tic-Tac-Toe game.
- *
- * @author Joabson Arley do Nascimento
- */
+@Data
 public class TicTacToe {
     private String gameId;
     private String[][] board;
@@ -119,63 +116,6 @@ public class TicTacToe {
         return winner != null || isBoardFull();
     }
 
-    /**
-     * Getters and Setters
-     */
-    public String getGameId() {
-        return gameId;
-    }
 
-    public void setGameId(String gameId) {
-        this.gameId = gameId;
-    }
-
-    public String[][] getBoard() {
-        return board;
-    }
-
-    public void setBoard(String[][] board) {
-        this.board = board;
-    }
-
-    public String getPlayer1() {
-        return player1;
-    }
-
-    public void setPlayer1(String player1) {
-        this.player1 = player1;
-    }
-
-    public String getPlayer2() {
-        return player2;
-    }
-
-    public void setPlayer2(String player2) {
-        this.player2 = player2;
-    }
-
-    public String getWinner() {
-        return winner;
-    }
-
-    public void setWinner(String winner) {
-        this.winner = winner;
-    }
-
-    public String getTurn() {
-        return turn;
-    }
-
-    public void setTurn(String turn) {
-        this.turn = turn;
-    }
-
-    public GameState getGameState() {
-        return gameState;
-    }
-
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
-    }
 }
 
