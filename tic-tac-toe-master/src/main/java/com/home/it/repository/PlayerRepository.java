@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface PlayerRepository extends JpaRepository<Player,Long> {
-    @Query("SELECT p FROM Player p WHERE p.firstPlayerName =:winnerName   OR p.secondPlayerName =:winnerName ORDER BY p.id DESC LIMIT 1")
+    @Query("SELECT p FROM Player p WHERE p.firstPlayerName =:winnerName  OR p.secondPlayerName =:winnerName")
     Player findWinnerId(@Param("winnerName") String winnerName);
 }

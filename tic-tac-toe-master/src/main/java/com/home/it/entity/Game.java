@@ -17,4 +17,5 @@ public class Game {
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
     private Set<GameResult> gameResults;
+    private String gameName;
 }

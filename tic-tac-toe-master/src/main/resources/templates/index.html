@@ -31,5 +31,104 @@
 <script th:src="@{/js/lib/jquery-3.5.1.min.js}"></script>
 <script th:src="@{/js/lib/toastr.js}"></script>
 <script th:src="@{/js/tictactoe.js}"></script>
+
+<div class="container mt-5">
+    <button type="button" class="btn1-custom"
+            style="
+                background-color: #4CAF50; /* Green */
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                transition: background-color 0.3s, transform 0.3s;
+            "
+            onmouseover="this.style.backgroundColor='#45a049'; this.style.transform='scale(1.1)';"
+            onmouseout="this.style.backgroundColor='#4CAF50'; this.style.transform='scale(1)';"
+            onclick="fetchLastResults()"
+    >
+        See last results
+    </button>
+</div>
+
+<!-- Beautiful Popup Box -->
+<div id="popupBox" class="popup">
+    <div class="popup-content" style="background-color: lightblue; /* Light blue background */">
+        <span class="close" onclick="closePopupBox()">&times;</span>
+        <pre id="popupContent"></pre>
+    </div>
+</div>
+
+<script>
+    async function fetchLastResults() {
+        try {
+            const response = await fetch('http://localhost:9000/api/v1/gameResult/showLastTenResult');
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            const data = await response.json();
+            console.log(data); // You can replace this with your desired action
+            displayPopup(data); // Display the result in the popup box
+        } catch (error) {
+            console.error('There has been a problem with your fetch operation:', error);
+        }
+    }
+
+    function displayPopup(data) {
+        const popupContent = document.getElementById('popupContent');
+        popupContent.textContent = JSON.stringify(data, null, 2);
+        const popupBox = document.getElementById('popupBox');
+        popupBox.style.display = 'block'; // Show the popup box
+    }
+
+    function closePopupBox() {
+        const popupBox = document.getElementById('popupBox');
+        popupBox.style.display = 'none'; // Hide the popup box
+    }
+</script>
+
+<style>
+    /* Styles for the popup box */
+    .popup {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0, 0, 0, 0.4); /* Transparent black background */
+    }
+
+    .popup-content {
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
+        border-radius: 10px; /* Rounded corners */
+        background-color: lightblue; /* Light blue background color */
+    }
+
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
+
 </body>
 </html>
