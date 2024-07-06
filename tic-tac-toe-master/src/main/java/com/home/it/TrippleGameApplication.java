@@ -10,4 +10,5 @@ public class TrippleGameApplication {
         SpringApplication.run(TrippleGameApplication.class, args);
     }
 
+
 }
